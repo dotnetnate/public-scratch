@@ -1,0 +1,848 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Conversation API",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [{
+        "url": "https://your_apim_service_name.azure-api.net/conversation"
+    }],
+    "paths": {
+        "/{conversationId}/moderators": {
+            "post": {
+                "summary": "Add Moderator",
+                "operationId": "add-moderator",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation the moderator is being added to.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token (JWT) of the user making the call to the API.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userReference"
+                            },
+                            "example": {
+                                "userId": "EB81BEE2-3936-482E-AC73-352DEC9A5A56",
+                                "displayName": "John Doe"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns when the operation has succeeded. No body is returned."
+                    }
+                }
+            }
+        },
+        "/{conversationId}/events": {
+            "post": {
+                "summary": "Broadcast Control Event",
+                "operationId": "broadcast-control-event",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to broadcast the event to.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returned when the request succeeds. No response body is returned."
+                    }
+                }
+            }
+        },
+        "/{conversationId}": {
+            "delete": {
+                "summary": "Close Conversation",
+                "operationId": "close-conversation",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to close.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The JWT bearer token of the user making the call.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returned when the request succeeds. No response body is returned."
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get Conversation",
+                "operationId": "get-conversation",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to retrieve.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorizastion",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants": {
+            "post": {
+                "summary": "Add Participant",
+                "operationId": "add-participant",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation the participant is being added to.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userReference"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returned when the request succeeds. No response body is returned."
+                    }
+                }
+            }
+        },
+        "/": {
+            "post": {
+                "summary": "Create Conversation",
+                "operationId": "create-conversation",
+                "parameters": [{
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/conversation"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/conversation"
+                                },
+                                "example": {
+                                    "conversationId": "string",
+                                    "tenantId": "string",
+                                    "title": "string",
+                                    "description": "string",
+                                    "type": 0,
+                                    "participants": [{
+                                        "user": {
+                                            "userId": "string",
+                                            "displayName": "string",
+                                            "profileImageUrl": "string"
+                                        },
+                                        "state": 0,
+                                        "role": 0
+                                    }],
+                                    "state": 0,
+                                    "metadata": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "post": {
+                "summary": "Find Conversations",
+                "operationId": "find-conversations",
+                "parameters": [{
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/conversationQuery"
+                            },
+                            "example": {
+                                "conversationIdFilter": "5EC1385A-1052-489F-97FD-A020323A6872",
+                                "createDateFilter": 123456,
+                                "pageNumber": 1,
+                                "pageSize": 50
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/moderators/{moderatorId}": {
+            "delete": {
+                "summary": "Remove Moderator",
+                "operationId": "remove-moderator",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to remove the moderator from.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "moderatorId",
+                    "in": "path",
+                    "description": "The id of the moderator to remove.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants/{participantId}": {
+            "delete": {
+                "summary": "Remove Participant",
+                "operationId": "remove-participant",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to remove the participant from.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "participantId",
+                    "in": "path",
+                    "description": "The id of the participant to remove.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/messages": {
+            "post": {
+                "summary": "Create Message",
+                "operationId": "create-message",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to add the message to.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/message"
+                            },
+                            "example": {
+                                "messageId": "34A5E064-B7EC-473B-8B41-77EBF8F39FAD",
+                                "parentMessageId": null,
+                                "body": "This is a test message.",
+                                "sender": {
+                                    "userId": "94A5E064-B7EC-473B-8B41-77EBF8F39FAD",
+                                    "displayName": "John Doe",
+                                    "profileImageUrl": "https://someuri.org/path.jpg"
+                                },
+                                "state": 0,
+                                "type": 200,
+                                "mentions": [{
+                                    "user": {
+                                        "userId": "FFA5E064-B7EC-473B-8B41-77EBF8F39FAD",
+                                        "displayName": "John Doe 2",
+                                        "profileImageUrl": "https://someuri.org/path.jpg"
+                                    },
+                                    "mentionTextPattern": "@johndoe2"
+                                }]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returned when the request succeeds.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/message"
+                                },
+                                "example": {
+                                    "messageId": "string",
+                                    "conversationId": "string",
+                                    "tenantId": "string",
+                                    "parentMessageId": "string",
+                                    "body": "string",
+                                    "sender": {
+                                        "userId": "string",
+                                        "displayName": "string",
+                                        "profileImageUrl": "string"
+                                    },
+                                    "state": 0,
+                                    "type": 0,
+                                    "mentions": [{
+                                        "user": {
+                                            "userId": "string",
+                                            "displayName": "string",
+                                            "profileImageUrl": "string"
+                                        },
+                                        "mentionTextPattern": "string"
+                                    }],
+                                    "reactionSummary": {},
+                                    "timeDeleted": 0,
+                                    "timeModified": 0,
+                                    "timeCreated": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get Messages By Conversation",
+                "operationId": "get-messages-by-conversation",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "pageSize",
+                    "in": "query",
+                    "description": "The page size of the messages to retrieve.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }, {
+                    "name": "pageNumber",
+                    "in": "query",
+                    "description": "The page number of the messages to retrieve.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/messages/{messageId}": {
+            "delete": {
+                "summary": "Delete Message",
+                "operationId": "delete-message",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to delete the message from.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "messageId",
+                    "in": "path",
+                    "description": "The id of the message to delete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "summary": "Modify Message",
+                "operationId": "modify-message",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation to update the message within.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "messageId",
+                    "in": "path",
+                    "description": "The id of the message to update.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/messageUpdate"
+                            },
+                            "example": {
+                                "body": "This is an updated message with @bob",
+                                "mentionedUsers": ["theuser"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants/{participantId}/ban": {
+            "post": {
+                "summary": "Ban User",
+                "operationId": "ban-user",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The conversation id that the participant is being banned from.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "participantId",
+                    "in": "path",
+                    "description": "The id of the participant being banned.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returned when the request succeeds. No response body is returned."
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants/{participantId}/silence": {
+            "post": {
+                "summary": "Silence User",
+                "operationId": "silence-user",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation the participant is being silenced within.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "participantId",
+                    "in": "path",
+                    "description": "The id of the participant being silenced.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants/{participantId}/unban": {
+            "post": {
+                "summary": "UnBan User",
+                "operationId": "unban-user",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "participantId",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format":"uuid"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/{conversationId}/participants/{participantId}/unsilence": {
+            "post": {
+                "summary": "UnSilence User",
+                "operationId": "unsilence-user",
+                "parameters": [{
+                    "name": "conversationId",
+                    "in": "path",
+                    "description": "The id of the conversation the participant is being unsilenced from.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "participantId",
+                    "in": "path",
+                    "description": "The id of the participant being unsilenced.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "participant": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "state": {
+                        "type": "integer",
+                        "description": "Allowed values: 0 - active, 10 - silenced, 20 - banned"
+                    },
+                    "role": {
+                        "type": "integer",
+                        "description": "Allowed values: 0 - member, 10 - moderator, 100 - owner"
+                    }
+                }
+            },
+            "conversation": {
+                "type": "object",
+                "properties": {
+                    "conversationId": {
+                        "type": "string"
+                    },
+                    "tenantId": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "integer"
+                    },
+                    "participants": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/participant"
+                        }
+                    },
+                    "state": {
+                        "type": "integer"
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "userReference": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "description": "The system id of the user.",
+                        "format": "uuid"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "The display name of the user."
+                    },
+                    "profileImageUrl": {
+                        "type": "string",
+                        "description": "The URL of the user's profile image.",
+                        "format": "url"
+                    }
+                }
+            },
+            "conversationQuery": {
+                "type": "object",
+                "properties": {
+                    "createDateFilter": {
+                        "type": "integer",
+                        "description": "The Unix time, in milliseconds, to return all messages created after."
+                    },
+                    "pageNumber": {
+                        "type": "integer",
+                        "description": "The page number of the results to return."
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "description": "The page size of the results to return."
+                    }
+                }
+            },
+            "mentionedUser": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "mentionTextPattern": {
+                        "type": "string"
+                    }
+                }
+            },
+            "message": {
+                "type": "object",
+                "properties": {
+                    "messageId": {
+                        "type": "string"
+                    },
+                    "conversationId": {
+                        "type": "string"
+                    },
+                    "tenantId": {
+                        "type": "string"
+                    },
+                    "parentMessageId": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "sender": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "state": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "integer"
+                    },
+                    "mentions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/mentionedUser"
+                        }
+                    },
+                    "reactionSummary": {
+                        "type": "object"
+                    },
+                    "timeDeleted": {
+                        "type": "integer"
+                    },
+                    "timeModified": {
+                        "type": "integer"
+                    },
+                    "timeCreated": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "messageUpdate": {
+                "type": "object",
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "mentionedUsers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/mentionedUser"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
