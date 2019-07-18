@@ -1,0 +1,89 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "User API",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [{
+        "url": "https://https://kdrellenplatformapimd18.azure-api.net/users"
+    }],
+    "paths": {
+        "/{userId}": {
+            "get": {
+                "summary": "Get User Profile",
+                "operationId": "get-user-profile",
+                "parameters": [{
+                    "name": "userId",
+                    "in": "path",
+                    "description": "The id of the user profile to obtain.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {}
+            }
+        },
+        "/search": {
+            "post": {
+                "summary": "Find Users",
+                "operationId": "find-users",
+                "parameters": [{
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userSearchCriteria"
+                            },
+                            "example": {
+                                "userNameFilter": "JOHN",
+                                "pageNumber": 1,
+                                "pageSize": 25
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "userSearchCriteria": {
+                "type": "object",
+                "properties": {
+                    "userNameFilter": {
+                        "type": "string"
+                    },
+                    "pageNumber": {
+                        "type": "integer"
+                    },
+                    "pageSize": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}
