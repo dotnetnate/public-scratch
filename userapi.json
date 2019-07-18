@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://https://kdrellenplatformapimd18.azure-api.net/users"
+        "url": "https://kdrellenplatformapimd18.azure-api.net/users"
     }],
     "paths": {
         "/{userId}": {
@@ -30,7 +30,11 @@
                         "type": "string"
                     }
                 }],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
             }
         },
         "/search": {
