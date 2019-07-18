@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://your_apim_service_name.azure-api.net/conversation"
+        "url": "https://kdrellenplatformapimd18.azure-api.net/conversation"
     }],
     "paths": {
         "/{conversationId}/moderators": {
