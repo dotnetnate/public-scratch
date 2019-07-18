@@ -1,0 +1,160 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Tenant API",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [{
+        "url": "https://kdrellenplatformapimd18.azure-api.net/tenant"
+    }],
+    "paths": {
+        "/users/createAccessToken": {
+            "post": {
+                "summary": "Create User Access Token",
+                "operationId": "create-user-access-token",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "The API key of the tenant.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createAccessTokenRequest"
+                            },
+                            "example": {
+                                "externalUserIdentifier": "myusersid@somedomain.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/createAccessTokenResponse"
+                                },
+                                "example": {
+                                    "result": "eyTheJWTBase64SerializedString"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/": {
+            "post": {
+                "summary": "Create User",
+                "operationId": "create-user",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "The API subscription key of the tenant.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user"
+                            },
+                            "example": {
+                                "userId": "A1320D06-1C77-4678-949D-1C84ADB4E949",
+                                "externalId": "bob@mydomain.com",
+                                "profile": {
+                                    "displayName": "Bob",
+                                    "profileImageUrl": "https://someuri.org/image.jpg",
+                                    "metadata": {
+                                        "customProperty1": "value1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "createAccessTokenRequest": {
+                "type": "object",
+                "properties": {
+                    "externalUserIdentifier": {
+                        "type": "string"
+                    }
+                }
+            },
+            "user": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "externalId": {
+                        "type": "string"
+                    },
+                    "profile": {
+                        "type": "object",
+                        "properties": {
+                            "displayName": {
+                                "type": "string"
+                            },
+                            "profileImageUrl": {
+                                "type": "string"
+                            },
+                            "metadata": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "createAccessTokenResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [{
+        "apiKeyHeader": []
+    }, {
+        "apiKeyQuery": []
+    }]
+}
