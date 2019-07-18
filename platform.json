@@ -1,0 +1,60 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Platform API",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [{
+        "url": "https://https://kdrellenplatformapimd18.azure-api.net/platform"
+    }],
+    "paths": {
+        "/clientConfiguration/{clientId}": {
+            "get": {
+                "summary": "Get Client Configuration",
+                "operationId": "get-client-configuration",
+                "parameters": [{
+                    "name": "clientId",
+                    "in": "path",
+                    "description": "The id of the client to obtain configuration information for.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [{
+        "apiKeyHeader": []
+    }, {
+        "apiKeyQuery": []
+    }]
+}
