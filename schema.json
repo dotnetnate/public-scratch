@@ -12,6 +12,7 @@
         "/{conversationId}/moderators": {
             "post": {
                 "summary": "Add Moderator",
+                "description": "Add Moderator",
                 "operationId": "add-moderator",
                 "parameters": [{
                     "name": "conversationId",
@@ -24,7 +25,8 @@
                 }, {
                     "name": "Authorization",
                     "in": "header",
-                    "description": "The bearer token (JWT) of the user making the call to the API.",
+                    "description": "The bearer token of the user issuing the call.",
+                    "required": true,
                     "schema": {
                         "type": "string"
                     }
@@ -52,11 +54,20 @@
         "/{conversationId}/events": {
             "post": {
                 "summary": "Broadcast Control Event",
+                "description": "Broadcast Control Event",
                 "operationId": "broadcast-control-event",
                 "parameters": [{
                     "name": "conversationId",
                     "in": "path",
                     "description": "The id of the conversation to broadcast the event to.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Authorization",
+                    "in": "header",
+                    "description": "The bearer token of the user issuing the request.",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -72,6 +83,7 @@
         "/{conversationId}": {
             "delete": {
                 "summary": "Close Conversation",
+                "description": "Close Conversation",
                 "operationId": "close-conversation",
                 "parameters": [{
                     "name": "conversationId",
@@ -98,6 +110,7 @@
             },
             "get": {
                 "summary": "Get Conversation",
+                "description": "Get Conversation",
                 "operationId": "get-conversation",
                 "parameters": [{
                     "name": "conversationId",
@@ -108,7 +121,7 @@
                         "type": "string"
                     }
                 }, {
-                    "name": "Authorizastion",
+                    "name": "Authorization",
                     "in": "header",
                     "description": "The bearer token of the user issuing the request.",
                     "required": true,
@@ -118,7 +131,37 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/conversation"
+                                },
+                                "example": {
+                                    "conversationId": "4d5f9639-b9b5-49fb-9ba7-07e8e98e10b3",
+                                    "title": "test123",
+                                    "description": "test",
+                                    "type": 200,
+                                    "participants": [{
+                                        "user": {
+                                            "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                            "userId": "00000000-0000-0000-0000-000000000001",
+                                            "displayName": "Integration Test User 1"
+                                        },
+                                        "state": 0,
+                                        "role": 100
+                                    }],
+                                    "state": 1,
+                                    "metadata": {
+                                        "customField1": "customValue1",
+                                        "customField2": "customValue1",
+                                        "customField3": 3
+                                    },
+                                    "accessPolicy": null,
+                                    "timeCreated": 1561350299543
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -126,6 +169,7 @@
         "/{conversationId}/participants": {
             "post": {
                 "summary": "Add Participant",
+                "description": "Add Participant",
                 "operationId": "add-participant",
                 "parameters": [{
                     "name": "conversationId",
@@ -149,6 +193,11 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/userReference"
+                            },
+                            "example": {
+                                "userId": "string",
+                                "displayName": "string",
+                                "profileImageUrl": "string"
                             }
                         }
                     }
@@ -163,6 +212,7 @@
         "/": {
             "post": {
                 "summary": "Create Conversation",
+                "description": "Create Conversation",
                 "operationId": "create-conversation",
                 "parameters": [{
                     "name": "Authorization",
@@ -217,6 +267,7 @@
         "/search": {
             "post": {
                 "summary": "Find Conversations",
+                "description": "Find Conversations",
                 "operationId": "find-conversations",
                 "parameters": [{
                     "name": "Authorization",
@@ -244,7 +295,61 @@
                 },
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/conversationSearchResults"
+                                },
+                                "example": {
+                                    "result": [{
+                                        "conversationId": "4d5f9639-b9b5-49fb-9ba7-07e8e98e10b3",
+                                        "title": "Conversation 1",
+                                        "description": "This is the first sample conversation.",
+                                        "type": 200,
+                                        "participants": [{
+                                            "user": {
+                                                "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                                "userId": "00000000-0000-0000-0000-000000000001",
+                                                "displayName": "Integration Test User 1"
+                                            },
+                                            "state": 0,
+                                            "role": 100
+                                        }],
+                                        "state": 1,
+                                        "metadata": {
+                                            "customField1": "customValue1",
+                                            "customField2": "customValue1",
+                                            "customField3": 3
+                                        },
+                                        "accessPolicy": null,
+                                        "timeCreated": 1561350299543
+                                    }, {
+                                        "conversationId": "AA5f9639-b9b5-49fb-9ba7-07e8e98e10b3",
+                                        "title": "Conversation 2",
+                                        "description": "This is the second sample conversation.",
+                                        "type": 200,
+                                        "participants": [{
+                                            "user": {
+                                                "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                                "userId": "00000000-0000-0000-0000-000000000001",
+                                                "displayName": "Integration Test User 1"
+                                            },
+                                            "state": 0,
+                                            "role": 100
+                                        }],
+                                        "state": 1,
+                                        "metadata": {
+                                            "customField1": "customValue1",
+                                            "customField2": "customValue1",
+                                            "customField3": 3
+                                        },
+                                        "accessPolicy": null,
+                                        "timeCreated": 1561350299543
+                                    }]
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -252,24 +357,23 @@
         "/{conversationId}/moderators/{moderatorId}": {
             "delete": {
                 "summary": "Remove Moderator",
+                "description": "Remove Moderator",
                 "operationId": "remove-moderator",
                 "parameters": [{
                     "name": "conversationId",
                     "in": "path",
-                    "description": "The id of the conversation to remove the moderator from.",
+                    "description": "Format - uuid. The id of the conversation to remove the moderator from.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "moderatorId",
                     "in": "path",
-                    "description": "The id of the moderator to remove.",
+                    "description": "Format - uuid. The id of the moderator to remove.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "Authorization",
@@ -290,6 +394,7 @@
         "/{conversationId}/participants/{participantId}": {
             "delete": {
                 "summary": "Remove Participant",
+                "description": "Remove Participant",
                 "operationId": "remove-participant",
                 "parameters": [{
                     "name": "conversationId",
@@ -326,15 +431,15 @@
         "/{conversationId}/messages": {
             "post": {
                 "summary": "Create Message",
+                "description": "Create Message",
                 "operationId": "create-message",
                 "parameters": [{
                     "name": "conversationId",
                     "in": "path",
-                    "description": "The id of the conversation to add the message to.",
+                    "description": "Format - uuid. The id of the conversation to add the message to.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "Authorization",
@@ -349,11 +454,11 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/message"
+                                "$ref": "#/components/schemas/createMessageRequest"
                             },
                             "example": {
                                 "messageId": "34A5E064-B7EC-473B-8B41-77EBF8F39FAD",
-                                "parentMessageId": null,
+                                "parentMessageId": "CC00E064-B7EC-473B-8B41-77EBF8F39FAD",
                                 "body": "This is a test message.",
                                 "sender": {
                                     "userId": "94A5E064-B7EC-473B-8B41-77EBF8F39FAD",
@@ -415,14 +520,15 @@
             },
             "get": {
                 "summary": "Get Messages By Conversation",
+                "description": "Get Messages By Conversation",
                 "operationId": "get-messages-by-conversation",
                 "parameters": [{
                     "name": "conversationId",
                     "in": "path",
+                    "description": "Format - uuid.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "pageSize",
@@ -442,13 +548,62 @@
                     "name": "Authorization",
                     "in": "header",
                     "description": "The bearer token of the user issuing the request.",
+                    "required": true,
                     "schema": {
                         "type": "string"
                     }
                 }],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/messageSearchResults"
+                                },
+                                "example": {
+                                    "results": [{
+                                        "messageId": "aad3e37d-171b-4b32-b5e6-973f7e0fee78",
+                                        "conversationId": "00be4806-46b7-4e91-829e-9eef6328911c",
+                                        "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                        "parentMessageId": null,
+                                        "body": "Message 1",
+                                        "sender": {
+                                            "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                            "userId": "00000000-0000-0000-0000-000000000002",
+                                            "displayName": "User 1",
+                                            "profileImageUrl": "https://someuri.org/profile.jpg"
+                                        },
+                                        "state": 1,
+                                        "type": 0,
+                                        "mentions": [],
+                                        "reactionSummary": {},
+                                        "timeDeleted": null,
+                                        "timeModified": null,
+                                        "timeCreated": 1561467665943
+                                    }, {
+                                        "messageId": "bbd3e37d-171b-4b32-b5e6-973f7e0fee78",
+                                        "conversationId": "00be4806-46b7-4e91-829e-9eef6328911c",
+                                        "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                        "parentMessageId": null,
+                                        "body": "Message 2",
+                                        "sender": {
+                                            "tenantId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                            "userId": "00000000-0000-0000-0000-000000000002",
+                                            "displayName": "User 1",
+                                            "profileImageUrl": "https://someuri.org/profile.jpg"
+                                        },
+                                        "state": 1,
+                                        "type": 0,
+                                        "mentions": [],
+                                        "reactionSummary": {},
+                                        "timeDeleted": null,
+                                        "timeModified": null,
+                                        "timeCreated": 1561467665943
+                                    }]
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -456,6 +611,7 @@
         "/{conversationId}/messages/{messageId}": {
             "delete": {
                 "summary": "Delete Message",
+                "description": "Delete Message",
                 "operationId": "delete-message",
                 "parameters": [{
                     "name": "conversationId",
@@ -488,8 +644,9 @@
                     }
                 }
             },
-            "post": {
+            "put": {
                 "summary": "Modify Message",
+                "description": "Modify Message",
                 "operationId": "modify-message",
                 "parameters": [{
                     "name": "conversationId",
@@ -502,11 +659,10 @@
                 }, {
                     "name": "messageId",
                     "in": "path",
-                    "description": "The id of the message to update.",
+                    "description": "Format - uuid. The id of the message to update.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "Authorization",
@@ -540,6 +696,7 @@
         "/{conversationId}/participants/{participantId}/ban": {
             "post": {
                 "summary": "Ban User",
+                "description": "Ban User",
                 "operationId": "ban-user",
                 "parameters": [{
                     "name": "conversationId",
@@ -576,6 +733,7 @@
         "/{conversationId}/participants/{participantId}/silence": {
             "post": {
                 "summary": "Silence User",
+                "description": "Silence User",
                 "operationId": "silence-user",
                 "parameters": [{
                     "name": "conversationId",
@@ -612,22 +770,23 @@
         "/{conversationId}/participants/{participantId}/unban": {
             "post": {
                 "summary": "UnBan User",
+                "description": "UnBan User",
                 "operationId": "unban-user",
                 "parameters": [{
                     "name": "conversationId",
                     "in": "path",
+                    "description": "Format - uuid.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "participantId",
                     "in": "path",
+                    "description": "Format - uuid.",
                     "required": true,
                     "schema": {
-                        "type": "string",
-                        "format":"uuid"
+                        "type": "string"
                     }
                 }, {
                     "name": "Authorization",
@@ -648,6 +807,7 @@
         "/{conversationId}/participants/{participantId}/unsilence": {
             "post": {
                 "summary": "UnSilence User",
+                "description": "UnSilence User",
                 "operationId": "unsilence-user",
                 "parameters": [{
                     "name": "conversationId",
@@ -836,6 +996,45 @@
                         "type": "string"
                     },
                     "mentionedUsers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/mentionedUser"
+                        }
+                    }
+                }
+            },
+            "conversationSearchResults": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/conversation"
+                        }
+                    }
+                }
+            },
+            "messageSearchResults": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "$ref": "#/components/schemas/message"
+                    }
+                }
+            },
+            "createMessageRequest": {
+                "type": "object",
+                "properties": {
+                    "parentMessageId": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "sender": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "mentions": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/mentionedUser"
