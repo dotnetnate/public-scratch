@@ -844,57 +844,6 @@
     },
     "components": {
         "schemas": {
-            "participant": {
-                "type": "object",
-                "properties": {
-                    "user": {
-                        "$ref": "#/components/schemas/userReference"
-                    },
-                    "state": {
-                        "type": "integer",
-                        "description": "Allowed values: 0 - active, 10 - silenced, 20 - banned"
-                    },
-                    "role": {
-                        "type": "integer",
-                        "description": "Allowed values: 0 - member, 10 - moderator, 100 - owner"
-                    }
-                }
-            },
-            "conversation": {
-                "type": "object",
-                "properties": {
-                    "conversationId": {
-                        "type": "string"
-                    },
-                    "tenantId": {
-                        "type": "string"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "type": {
-                        "type": "integer"
-                    },
-                    "participants": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/participant"
-                        }
-                    },
-                    "state": {
-                        "type": "integer"
-                    },
-                    "metadata": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "userReference": {
                 "type": "object",
                 "properties": {
@@ -939,53 +888,6 @@
                     },
                     "mentionTextPattern": {
                         "type": "string"
-                    }
-                }
-            },
-            "message": {
-                "type": "object",
-                "properties": {
-                    "messageId": {
-                        "type": "string"
-                    },
-                    "conversationId": {
-                        "type": "string"
-                    },
-                    "tenantId": {
-                        "type": "string"
-                    },
-                    "parentMessageId": {
-                        "type": "string"
-                    },
-                    "body": {
-                        "type": "string"
-                    },
-                    "sender": {
-                        "$ref": "#/components/schemas/userReference"
-                    },
-                    "state": {
-                        "type": "integer"
-                    },
-                    "type": {
-                        "type": "integer"
-                    },
-                    "mentions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/mentionedUser"
-                        }
-                    },
-                    "reactionSummary": {
-                        "type": "object"
-                    },
-                    "timeDeleted": {
-                        "type": "integer"
-                    },
-                    "timeModified": {
-                        "type": "integer"
-                    },
-                    "timeCreated": {
-                        "type": "integer"
                     }
                 }
             },
@@ -1039,6 +941,146 @@
                         "items": {
                             "$ref": "#/components/schemas/mentionedUser"
                         }
+                    }
+                }
+            },
+            "conversation": {
+                "type": "object",
+                "properties": {
+                    "conversationId": {
+                        "type": "string"
+                    },
+                    "tenantId": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/conversationType"
+                    },
+                    "participants": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/participant"
+                        }
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/conversationState"
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "conversationState": {
+                "enum": [1, 2],
+                "type": "integer",
+                "description": "The state of a conversation."
+            },
+            "conversationType": {
+                "enum": [0, 100, 200],
+                "type": "integer",
+                "description": "The conversation types the system supports."
+            },
+            "message": {
+                "type": "object",
+                "properties": {
+                    "messageId": {
+                        "type": "string"
+                    },
+                    "conversationId": {
+                        "type": "string"
+                    },
+                    "tenantId": {
+                        "type": "string"
+                    },
+                    "parentMessageId": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "sender": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/messageState"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/messageType"
+                    },
+                    "mentions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/mentionedUser"
+                        }
+                    },
+                    "reactionSummary": {
+                        "type": "object"
+                    },
+                    "timeDeleted": {
+                        "type": "integer"
+                    },
+                    "timeModified": {
+                        "type": "integer"
+                    },
+                    "timeCreated": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "messageState": {
+                "enum": [1, 2],
+                "type": "integer",
+                "description": "The state of a message."
+            },
+            "messageType": {
+                "enum": [0, 100, 200],
+                "type": "integer",
+                "description": "The type of supported message."
+            },
+            "participant": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/userReference"
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/participantState"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/participantRole"
+                    }
+                }
+            },
+            "participantRole": {
+                "enum": [0, 10, 100],
+                "type": "integer",
+                "description": "Indicates the participant's role within a conversation."
+            },
+            "participantState": {
+                "enum": [0, 10, 20],
+                "type": "integer",
+                "description": "Indicates the participant's state within a conversation."
+            },
+            "clientConfiguration": {
+                "type": "object",
+                "properties": {
+                    "baseEndpoint": {
+                        "type": "string"
+                    },
+                    "publishKey": {
+                        "type": "string"
+                    },
+                    "subscribeKey": {
+                        "type": "string"
                     }
                 }
             }
