@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://your_apim_service_name.azure-api.net/tenant"
+        "url": "https://kdrellenplatformapimd18.azure-api.net/tenant"
     }],
     "paths": {
         "/users/createAccessToken": {
@@ -92,32 +92,6 @@
             }
         },
         "/users/{userId}": {
-            "delete": {
-                "summary": "Delete User",
-                "operationId": "delete-user",
-                "parameters": [{
-                    "name": "userId",
-                    "in": "path",
-                    "description": "The system id of the user to delete.",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    }
-                }, {
-                    "name": "Ocp-Apim-Subscription-Key",
-                    "in": "header",
-                    "description": "The tenant subscription key.",
-                    "required": true,
-                    "schema": {
-                        "type": "string."
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Returned when the operation successfully completes."
-                    }
-                }
-            },
             "post": {
                 "summary": "Update User",
                 "operationId": "update-user",
@@ -175,6 +149,24 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete User",
+                "operationId": "delete-user",
+                "parameters": [{
+                    "name": "userId",
+                    "in": "path",
+                    "description": "The id of the user to delete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": ""
                     }
                 }
             }
