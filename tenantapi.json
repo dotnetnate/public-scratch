@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://kdrellenplatformapimd18.azure-api.net/tenant"
+        "url": "https://kdrellenplatformapimd18.azure-api.net//tenant"
     }],
     "paths": {
         "/users/createAccessToken": {
@@ -87,6 +87,94 @@
                 "responses": {
                     "200": {
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "delete": {
+                "summary": "Delete User",
+                "operationId": "delete-user",
+                "parameters": [{
+                    "name": "userId",
+                    "in": "path",
+                    "description": "The system id of the user to delete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "The tenant subscription key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string."
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returned when the operation successfully completes."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Update User",
+                "operationId": "update-user",
+                "parameters": [{
+                    "name": "userId",
+                    "in": "path",
+                    "description": "The system id of the user to update.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "The tenant subscription key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user"
+                            },
+                            "example": {
+                                "userId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                "externalId": "MyInternalUserId",
+                                "profile": {
+                                    "displayName": "Bob Newheart",
+                                    "profileImageUrl": "https://www.someuri.org/profile.jpg",
+                                    "metadata": {}
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                },
+                                "example": {
+                                    "userId": "5acd95fa-7f02-4fda-a0a8-e527481f0448",
+                                    "externalId": "MyInternalUserId",
+                                    "profile": {
+                                        "displayName": "Bob Newheart",
+                                        "profileImageUrl": "https://www.someuri.org/profile.jpg",
+                                        "metadata": {}
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
