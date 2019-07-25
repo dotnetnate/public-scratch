@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://kdrellenplatformapimd18.azure-api.net//tenant"
+        "url": "https://your_apim_service_name.azure-api.net/tenant"
     }],
     "paths": {
         "/users/createAccessToken": {
