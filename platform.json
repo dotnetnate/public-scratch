@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "servers": [{
-        "url": "https://https://kdrellenplatformapimd18.azure-api.net/platform"
+        "url": "https://your_apim_service_name.azure-api.net/platform"
     }],
     "paths": {
         "/clientConfiguration/{clientId}": {
@@ -16,7 +16,7 @@
                 "parameters": [{
                     "name": "clientId",
                     "in": "path",
-                    "description": "The id of the client to obtain configuration information for.",
+                    "description": "The id of the client to obtain configuration information for. This is reserved for future use and can be any text value.",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -32,13 +32,41 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/clientConfiguration"
+                                },
+                                "example": {
+                                    "publishKey": "pub123",
+                                    "subscribeKey": "sub789",
+                                    "baseEndpoint": "https://kdrellenplatformapimd18.azure-api.net/"
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     },
     "components": {
+        "schemas": {
+            "clientConfiguration": {
+                "type": "object",
+                "properties": {
+                    "publishKey": {
+                        "type": "string"
+                    },
+                    "subscribeKey": {
+                        "type": "string"
+                    },
+                    "baseEndpoint": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "apiKeyHeader": {
                 "type": "apiKey",
@@ -52,7 +80,7 @@
             }
         }
     },
-    "security": [{
+    "security": [{}, {
         "apiKeyHeader": []
     }, {
         "apiKeyQuery": []
