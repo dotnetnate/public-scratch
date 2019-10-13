@@ -161,7 +161,7 @@
                             "Authorization": {
                                 "description": "The bearer token for the user making the request.",
                                 "schema": {
-                                    "type": "string."
+                                    "type": "string"
                                 }
                             }
                         },
