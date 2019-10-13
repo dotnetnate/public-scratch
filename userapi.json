@@ -3,7 +3,7 @@
     "info": {
         "title": "User API",
         "description": "",
-        "version": "1.0"
+        "version": "1.0",
     },
     "servers": [{
         "url": "https://your_apim_service_name.azure-api.net/users"
