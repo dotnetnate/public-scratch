@@ -169,7 +169,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PlatformClientConfiguration-clientId-Get200ApplicationJsonResponse"
+                                    "$ref": "#/components/schemas/clientConfiguration"
                                 }
                             }
                         }
