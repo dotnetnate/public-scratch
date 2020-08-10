@@ -1,0 +1,1002 @@
+openapi: 3.0.1
+info:
+  title: Conversation API
+  description: ''
+  version: '1.0'
+paths:
+  '/{conversationId}/messages/{messageId}/report':
+    put:
+      summary: Report Message
+      description: Report Message
+      operationId: report-message
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation.
+          required: true
+          schema:
+            type: string
+        - name: messageId
+          in: path
+          description: The id of the message.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reportMessageRequest'
+      responses:
+        '200':
+          description: 'null'
+  '/{conversationId}/events':
+    post:
+      summary: Broadcast Control Event
+      description: Broadcast Control Event
+      operationId: broadcast-control-event
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to broadcast the event to.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returned when the request succeeds. No response body is returned.
+  '/{conversationId}/media':
+    post:
+      summary: Create Media
+      description: Create Media
+      operationId: create-media
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                mediaUrl: 'https://someurl.org'
+                thumbnailUrl: 'https://someurl-thumbnail.org'
+  '/{conversationId}/participants/{participantId}':
+    put:
+      summary: Add Participant
+      description: Add Participant
+      operationId: add-participant
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation the participant is being added to.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: The id of the participant.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returned when the request succeeds. No response body is returned.
+    delete:
+      summary: Remove Participant
+      description: Remove Participant
+      operationId: remove-participant
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to remove the participant from.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: The id of the participant to remove.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}/participants/{participantId}/unban':
+    post:
+      summary: UnBan User
+      description: UnBan User
+      operationId: unban-user
+      parameters:
+        - name: conversationId
+          in: path
+          description: Format - uuid.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: Format - uuid.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}/participants/{participantId}/ban':
+    post:
+      summary: Ban User
+      description: Ban User
+      operationId: ban-user
+      parameters:
+        - name: conversationId
+          in: path
+          description: The conversation id that the participant is being banned from.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: The id of the participant being banned.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returned when the request succeeds. No response body is returned.
+  '/{conversationId}/messages/changes':
+    post:
+      summary: Get Change Log
+      description: Get Change Log
+      operationId: get-change-log
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the calling user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              startTime: 1580099501044
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/changeLog'
+  '/{conversationId}/messages/{messageId}/reaction':
+    put:
+      summary: Set Message Reaction for User
+      description: Set Message Reaction for User
+      operationId: set-message-reaction-for-user
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation.
+          required: true
+          schema:
+            type: string
+        - name: messageId
+          in: path
+          description: The id of the message.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the messaging user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/setUserReactionRequest'
+            example:
+              reactionCode: LIKE
+      responses:
+        '200':
+          description: ''
+        '202':
+          description: ''
+        '500':
+          description: ''
+  '/{conversationId}/moderators/{moderatorId}':
+    put:
+      summary: Add Moderator
+      description: Add Moderator
+      operationId: add-moderator
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation the moderator is being added to.
+          required: true
+          schema:
+            type: string
+        - name: moderatorId
+          in: path
+          description: The id of the moderator.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the call.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns when the operation has succeeded. No body is returned.
+    delete:
+      summary: Remove Moderator
+      description: Remove Moderator
+      operationId: remove-moderator
+      parameters:
+        - name: conversationId
+          in: path
+          description: >-
+            Format - uuid. The id of the conversation to remove the moderator
+            from.
+          required: true
+          schema:
+            type: string
+        - name: moderatorId
+          in: path
+          description: Format - uuid. The id of the moderator to remove.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}/participants/{participantId}/silence':
+    post:
+      summary: Silence User
+      description: Silence User
+      operationId: silence-user
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation the participant is being silenced within.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: The id of the participant being silenced.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}/messages/{messageId}':
+    delete:
+      summary: Delete Message
+      description: Delete Message
+      operationId: delete-message
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to delete the message from.
+          required: true
+          schema:
+            type: string
+        - name: messageId
+          in: path
+          description: The id of the message to delete.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    put:
+      summary: Modify Message
+      description: Modify Message
+      operationId: modify-message
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to update the message within.
+          required: true
+          schema:
+            type: string
+        - name: messageId
+          in: path
+          description: Format - uuid. The id of the message to update.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateMessageRequest'
+            example:
+              body: This is an updated message with @bob
+              mentionedUsers:
+                - theuser
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}/participants/{participantId}/unsilence':
+    post:
+      summary: UnSilence User
+      description: UnSilence User
+      operationId: unsilence-user
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation the participant is being unsilenced from.
+          required: true
+          schema:
+            type: string
+        - name: participantId
+          in: path
+          description: The id of the participant being unsilenced.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  '/{conversationId}':
+    delete:
+      summary: Close Conversation
+      description: Close Conversation
+      operationId: close-conversation
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to close.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The JWT bearer token of the user making the call.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returned when the request succeeds. No response body is returned.
+    put:
+      summary: Update Conversation
+      description: Update Conversation
+      operationId: update-conversation
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateConversationRequest'
+      responses:
+        '200':
+          description: ''
+        '202':
+          description: ''
+    get:
+      summary: Get Conversation
+      description: Get Conversation
+      operationId: get-conversation
+      parameters:
+        - name: conversationId
+          in: path
+          description: The id of the conversation to retrieve.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversation'
+              example:
+                conversationId: 4d5f9639-b9b5-49fb-9ba7-07e8e98e10b3
+                title: test123
+                description: test
+                type: 200
+                participants:
+                  - user:
+                      tenantId: 5acd95fa-7f02-4fda-a0a8-e527481f0448
+                      userId: 00000000-0000-0000-0000-000000000001
+                      displayName: Integration Test User 1
+                    state: 0
+                    role: 100
+                state: 1
+                metadata:
+                  customField1: customValue1
+                  customField2: customValue1
+                  customField3: '3'
+                accessPolicy: null
+                timeCreated: 1561350299543
+  /:
+    post:
+      summary: Create Conversation
+      description: Create Conversation
+      operationId: create-conversation
+      parameters:
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createConversationRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversation'
+              example:
+                conversationId: string
+                tenantId: string
+                title: string
+                description: string
+                type: 0
+                participants:
+                  - user:
+                      userId: string
+                      displayName: string
+                      profileImageUrl: string
+                    state: 0
+                    role: 0
+                state: 0
+                metadata: {}
+  /search:
+    post:
+      summary: Find Conversations
+      description: Find Conversations
+      operationId: find-conversations
+      parameters:
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/conversationQuery'
+            example:
+              conversationIdFilter: 5EC1385A-1052-489F-97FD-A020323A6872
+              createDateFilter: 123456
+              pageNumber: 1
+              pageSize: 50
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversationSearchResults'
+              example:
+                result:
+                  - conversationId: 4d5f9639-b9b5-49fb-9ba7-07e8e98e10b3
+                    title: Conversation 1
+                    description: This is the first sample conversation.
+                    type: 200
+                    participants:
+                      - user:
+                          tenantId: 5acd95fa-7f02-4fda-a0a8-e527481f0448
+                          userId: 00000000-0000-0000-0000-000000000001
+                          displayName: Integration Test User 1
+                        state: 0
+                        role: 100
+                    state: 1
+                    metadata:
+                      customField1: customValue1
+                      customField2: customValue1
+                      customField3: '3'
+                    accessPolicy: null
+                    timeCreated: 1561350299543
+                  - conversationId: AA5f9639-b9b5-49fb-9ba7-07e8e98e10b3
+                    title: Conversation 2
+                    description: This is the second sample conversation.
+                    type: 200
+                    participants:
+                      - user:
+                          tenantId: 5acd95fa-7f02-4fda-a0a8-e527481f0448
+                          userId: 00000000-0000-0000-0000-000000000001
+                          displayName: Integration Test User 1
+                        state: 0
+                        role: 100
+                    state: 1
+                    metadata:
+                      customField1: customValue1
+                      customField2: customValue1
+                      customField3: '3'
+                    accessPolicy: null
+                    timeCreated: 1561350299543
+  '/{conversationId}/messages':
+    post:
+      summary: Create Message
+      description: Create Message
+      operationId: create-message
+      parameters:
+        - name: conversationId
+          in: path
+          description: Format - uuid. The id of the conversation to add the message to.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createMessageRequest'
+            example:
+              messageId: 34A5E064-B7EC-473B-8B41-77EBF8F39FAD
+              parentMessageId: CC00E064-B7EC-473B-8B41-77EBF8F39FAD
+              body: This is a test message.
+              sender:
+                userId: 94A5E064-B7EC-473B-8B41-77EBF8F39FAD
+                displayName: John Doe
+                profileImageUrl: 'https://someuri.org/path.jpg'
+              state: 0
+              type: 200
+              mentions:
+                - user:
+                    userId: FFA5E064-B7EC-473B-8B41-77EBF8F39FAD
+                    displayName: John Doe 2
+                    profileImageUrl: 'https://someuri.org/path.jpg'
+                  mentionTextPattern: '@johndoe2'
+      responses:
+        '200':
+          description: Returned when the request succeeds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+              example:
+                messageId: string
+                conversationId: string
+                tenantId: string
+                parentMessageId: string
+                body: string
+                sender:
+                  userId: string
+                  displayName: string
+                  profileImageUrl: string
+                state: 0
+                type: 0
+                mentions:
+                  - user:
+                      userId: string
+                      displayName: string
+                      profileImageUrl: string
+                    mentionTextPattern: string
+                reactionSummary: {}
+                timeDeleted: 0
+                timeModified: 0
+                timeCreated: 0
+  '/{conversationId}/messages/search':
+    post:
+      summary: Get Messages By Conversation
+      description: Get Messages By Conversation
+      operationId: get-messages-by-conversation
+      parameters:
+        - name: conversationId
+          in: path
+          description: Format - uuid.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messageSearchResults'
+components:
+  schemas:
+    userReference:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The system id of the user.
+          format: uuid
+        displayName:
+          type: string
+          description: The display name of the user.
+        profileImageUrl:
+          type: string
+          description: The URL of the user's profile image.
+          format: url
+    conversationQuery:
+      type: object
+      properties:
+        createDateFilter:
+          type: integer
+          description: >-
+            The Unix time, in milliseconds, to return all messages created
+            after.
+        pageNumber:
+          type: integer
+          description: The page number of the results to return.
+        pageSize:
+          type: integer
+          description: The page size of the results to return.
+        metadataFilter:
+          type: object
+          additionalProperties:
+            type: string
+    mentionedUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/userReference'
+        mentionTextPattern:
+          type: string
+    updateMessageRequest:
+      type: object
+      properties:
+        body:
+          type: string
+        mentionedUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/mentionedUser'
+    conversationSearchResults:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversation'
+    messageSearchResults:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/message'
+    createConversationRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/participant'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    conversation:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/conversationType'
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/participant'
+        state:
+          $ref: '#/components/schemas/conversationState'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    conversationState:
+      enum:
+        - 1
+        - 2
+      type: integer
+      description: The state of a conversation.
+    conversationType:
+      enum:
+        - 0
+        - 100
+        - 200
+      type: integer
+      description: The conversation types the system supports.
+    messageState:
+      enum:
+        - 1
+        - 2
+      type: integer
+      description: The state of a message.
+    messageType:
+      enum:
+        - 0
+        - 100
+        - 200
+      type: integer
+      description: The type of supported message.
+    participant:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/userReference'
+        state:
+          $ref: '#/components/schemas/participantState'
+        role:
+          $ref: '#/components/schemas/participantRole'
+    participantRole:
+      enum:
+        - 0
+        - 10
+        - 100
+      type: integer
+      description: Indicates the participant's role within a conversation.
+    participantState:
+      enum:
+        - 0
+        - 10
+        - 20
+      type: integer
+      description: Indicates the participant's state within a conversation.
+    clientConfiguration:
+      type: object
+      properties:
+        baseEndpoint:
+          type: string
+        publishKey:
+          type: string
+        subscribeKey:
+          type: string
+    createMessageRequest:
+      type: object
+      properties:
+        parentMessageId:
+          type: string
+        body:
+          type: string
+        sender:
+          $ref: '#/components/schemas/userReference'
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/mentionedUser'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        extensions:
+          type: object
+          additionalProperties:
+            type: object
+    message:
+      type: object
+      properties:
+        messageId:
+          type: string
+        conversationId:
+          type: string
+        parentMessageId:
+          type: string
+        body:
+          type: string
+        sender:
+          $ref: '#/components/schemas/userReference'
+        state:
+          $ref: '#/components/schemas/messageState'
+        type:
+          $ref: '#/components/schemas/messageType'
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/mentionedUser'
+        reactionSummary:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/reactionSummary'
+        timeDeleted:
+          type: integer
+        timeModified:
+          type: integer
+        timeCreated:
+          type: integer
+        modifiedBy:
+          $ref: '#/components/schemas/userReference'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        media:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/reactionSummary'
+        extensions:
+          type: object
+          additionalProperties:
+            type: object
+    messageReport:
+      type: object
+      properties:
+        comments:
+          type: string
+    reactionSummary:
+      type: object
+      properties:
+        summaryText:
+          type: string
+        count:
+          type: integer
+    setUserReactionRequest:
+      type: object
+      properties:
+        reactionCode:
+          type: string
+    reportMessageRequest:
+      type: object
+      properties:
+        comments:
+          type: string
+    mediaReference:
+      type: object
+      properties:
+        mimeType:
+          type: string
+        source:
+          type: string
+    messagingStatistics:
+      type: object
+      properties:
+        reportCount:
+          type: integer
+    updateConversationRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    changeLog:
+      type: object
+      properties:
+        startTime:
+          type: integer
+        newMessages:
+          $ref: '#/components/schemas/message'
+        modifiedMessages:
+          $ref: '#/components/schemas/message'
+        deletedMessages:
+          $ref: '#/components/schemas/message'
