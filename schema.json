@@ -33,7 +33,7 @@
                     "description": "The bearer token of the user.",
                     "required": true,
                     "schema": {
-                        "type": ""
+                        "type": "string"
                     }
                 }],
                 "requestBody": {
@@ -288,7 +288,7 @@
                     "description": "The bearer token of the calling user.",
                     "required": true,
                     "schema": {
-                        "type": ""
+                        "type": "string"
                     }
                 }],
                 "requestBody": {
@@ -341,7 +341,7 @@
                     "description": "The bearer token of the messaging user.",
                     "required": true,
                     "schema": {
-                        "type": ""
+                        "type": "string"
                     }
                 }],
                 "requestBody": {
