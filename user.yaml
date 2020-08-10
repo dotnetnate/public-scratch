@@ -1,0 +1,235 @@
+openapi: 3.0.1
+info:
+  title: User API
+  description: ''
+  version: '1.0'
+paths:
+  '/users/{userId}/profile/image':
+    get:
+      summary: Get User Profile Image Redirect Location
+      description: Get User Profile Image Redirect Location
+      operationId: get-user-profile-image-redirect-location
+      parameters:
+        - name: userId
+          in: path
+          description: The id of the user.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: ''
+  /:
+    put:
+      summary: Update User Profile
+      description: Update User Profile
+      operationId: update-user-profile
+      responses:
+        '200':
+          description: 'null'
+  '/{userId}':
+    get:
+      summary: Get User Profile
+      description: >-
+        Obtains a specific user profile by id. Information in this profile may
+        be limited based on the user executing the query.
+      operationId: get-user-profile
+      parameters:
+        - name: userId
+          in: path
+          description: The id of the user profile to obtain.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /search:
+    post:
+      summary: Find Users
+      description: >-
+        Allows for searching for users within the context of the logged-in
+        user's tenant.
+      operationId: find-users
+      parameters:
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSearchCriteria'
+            example:
+              userNameFilter: JOHN
+              pageNumber: 1
+              pageSize: 25
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSearchResult'
+              example:
+                - userId: string
+                  tenantId: string
+                  profile:
+                    displayName: string
+                    profileImageUrl: string
+                    metadata: {}
+  /current:
+    get:
+      summary: Get Logged In User Profile
+      description: >-
+        Gets the user profile for the currently logged in user. This may return
+        additional information than is provided to other users via search and
+        other mechanisms.
+      operationId: get-logged-in-user-profile
+      parameters:
+        - name: Authorization
+          in: header
+          description: The bearer token of the user issuing the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+              example:
+                userId: string
+                tenantId: string
+                profile:
+                  displayName: string
+                  profileImageUrl: string
+                  metadata: {}
+  '/platform/clientConfiguration/{clientId}':
+    get:
+      summary: Get Client Configuration
+      description: Get Client Configuration
+      operationId: get-client-configuration
+      parameters:
+        - name: clientId
+          in: path
+          description: 'The id of the client type, e.g. js, iOS, Android, etc.'
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: The bearer token of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            Authorization:
+              description: The bearer token for the user making the request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clientConfiguration'
+components:
+  schemas:
+    userSearchResult:
+      type: array
+      items:
+        required:
+          - userId
+          - tenantId
+          - profile
+        type: object
+        properties:
+          userId:
+            type: string
+            format: uuid
+          tenantId:
+            type: string
+            format: uuid
+          profile:
+            type: object
+            properties:
+              displayName:
+                type: string
+              profileImageUrl:
+                type: string
+              metadata:
+                type: object
+                additionalProperties:
+                  type: string
+    user:
+      required:
+        - userId
+        - tenantId
+        - profile
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+        profile:
+          type: object
+          properties:
+            displayName:
+              type: string
+            profileImageUrl:
+              type: string
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+    clientConfiguration:
+      type: object
+      properties:
+        publishKey:
+          type: string
+        subscribeKey:
+          type: string
+        baseEndpoiont:
+          type: string
+        resourceLanguage:
+          type: string
+        resources:
+          additionalProperties:
+            type: string
+    userSearchCriteria:
+      type: object
+      properties:
+        displayNameFilter:
+          type: string
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+    PlatformClientConfiguration-clientId-Get200ApplicationJsonResponse:
+      type: string
+  
